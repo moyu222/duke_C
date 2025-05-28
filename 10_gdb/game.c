@@ -16,6 +16,7 @@ int main(void) {
   if(fgets(buffer, 1024, stdin) == NULL) {
     printf("Oh no, you are giving up?  You lose...\n");
     return EXIT_FAILURE;
+
   }
   yourGuess = atoi(buffer);
   if(yourGuess != myNumber) {

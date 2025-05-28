@@ -34,7 +34,7 @@ What number do you guess?
 4
 I'm sorry, that is not right.  You lose
 
-It would be pretty boring to play this game
+It would be pretty boring to play this gamex
 until you actually guess the right number and win,
 but fortunately, that isn't the point.  The
 point is to practice with gdb.
@@ -58,7 +58,7 @@ be able to win round 2 instantly as well!
 Once you have found the two secret numbers, create a file called input.txt
 and place them in that file, one per line (round 1's secret number
 on the first line, and round 2's on the second line).
-
+..
 You should be able to run
 
 ./game < input.txt

@@ -6,7 +6,7 @@ run_test(){
     for line in `cat $testfile`
     do
 	IFS=" " correct=`/usr/local/l2p/match5/correct-match5 $line 2>&1`
-	IFS=" " broken=`$prog $line 2>&1`
+f2 	IFS=" " broken=`$prog $line 2>&1`
 	if [ "$broken" != "$correct" ]
 	then
 	    return 0
