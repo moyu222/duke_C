@@ -4,6 +4,17 @@
 
 void reverse(char * str) {
   //WRITE ME!
+  int len = 0;
+  char * ptr = str;
+  while (* ptr != '\0') {
+    len++;
+    ptr += 1;
+  }
+  char copy[len+1];
+  strncpy(copy, str, len);
+  for (int i = 0; i < len; i++) {
+    str[i] = copy[len-1-i];
+  }
 }
 
 int main(void) {
