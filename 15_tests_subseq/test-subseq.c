@@ -5,6 +5,8 @@
 
 size_t maxSeq(int * array, size_t n);
 
+#define MAX_SIZE 10
+
 int main(void) {
   // test1 : null array
   int * array = NULL;

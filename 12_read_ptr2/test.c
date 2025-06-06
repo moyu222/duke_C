@@ -2,17 +2,17 @@
 #include <stdlib.h>
 
 int f(int ** r, int ** s) {
-  int temp = ** r;
-  int temp2 = **s;
-  int * z = *r;
-  *r = *s;
-  *s = z;
-  printf("**r = %d\n",**r);
-  printf("**s = %d\n",**s);
-  *z += 3;
-  **s -= 8;
-  **r -= 19;
-  return temp + temp2;
+  int temp = ** r; // temp -> 80
+  int temp2 = **s; // temp2 -> 12
+  int * z = *r; // z = &a
+  *r = *s; // p = &b
+  *s = z; // q = &a
+  printf("**r = %d\n",**r); // **r = 12
+  printf("**s = %d\n",**s); // **s = 80
+  *z += 3; // a = 83
+  **s -= 8; // a = 75
+  **r -= 19; // b = -7
+  return temp + temp2; // return 92
 }
 
 int main(void) {
