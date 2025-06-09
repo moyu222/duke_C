@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int* aFunction(int x, int *p, int ** q) {
-  printf("x = %d\n", x);
-  printf("*p = %d\n", *p);
-  printf("**q= %d\n", **q);
-  *p = 42;
-  **q = 99;
-  *q = &p[1];
-  return &p[2];
+int* aFunction(int x, int *p, int ** q) { // x = 1, *p: {7,8,9}, **q: 4
+  printf("x = %d\n", x); // x = 1
+  printf("*p = %d\n", *p); // *p = 7
+  printf("**q= %d\n", **q); // **q= 4
+  *p = 42; // {42, 8, 9}
+  **q = 99; // {99, 5, 6}
+  *q = &p[1]; // *(&p) = &(anArray[2][1])
+  return &p[2]; // &(anArray[2][2])
 }
 
 int main (void) {
@@ -16,7 +16,7 @@ int main (void) {
 			{4,5,6},
 			{7,8,9} };
 
-  int * p = anArray[1];
+  int * p = anArray[1]; // {4, 5, 6}
   int * q = aFunction(anArray[0][0],
 		      anArray[2],
 		      &p);
