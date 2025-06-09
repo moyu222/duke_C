@@ -42,7 +42,40 @@ void addRandomMine(board_t * b) {
 
 board_t * makeBoard(int w, int h, int numMines) {
   //WRITE ME!
-  return NULL;
+  int ** board = malloc(h * sizeof(*board));
+  if (board == NULL) {
+    perror("malloc error");
+    exit(EXIT_FAILURE);
+  }
+  for (size_t i = 0; i < h; i++) {
+    board[i] = malloc(w * sizeof(**board));
+    if (board[i] == NULL) {
+      perror("malloc error");
+      exit(EXIT_FAILURE);
+    }
+  }
+
+  for (size_t x = 0; x < h; x++) {
+    for (size_t y = 0; y < w; y++) {
+      board[x][y] = UNKNOWN;
+    }
+  }
+
+  board_t * ans = malloc(sizeof(*ans));
+  if (ans == NULL) {
+    perror("malloc error");
+    exit(EXIT_FAILURE);
+  }
+
+  ans->height = h;
+  ans->width = w;
+  ans->board = board;
+  ans->totalMines = numMines;
+
+  for (int t = 0; t < numMines; t++) {
+    addRandomMine(ans);
+  }
+  return ans;
 }
 void printBoard(board_t * b) {    
   int found = 0;
@@ -96,7 +129,20 @@ void printBoard(board_t * b) {
 }
 int countMines(board_t * b, int x, int y) {
   //WRITE ME!
-  return 0;
+  int h_index = b->height - 1;
+  int w_index = b->width - 1;
+  int x_start = ((x-1) >= 0) ? (x-1) : 0;
+  int x_end = ((x+1) <= w_index) ? (x+1) : w_index;
+  int y_start = ((y-1) >= 0) ? (y-1) : 0;
+  int y_end = ((y+1) <= h_index) ? (y+1) : h_index;
+  int res = 0;
+  for (int i = y_start; i <= y_end; i++) {
+    for (int j = x_start; j <= x_end; j++) {
+      res += IS_MINE(b->board[i][j]);
+    }
+  }
+  res -= IS_MINE(b->board[y][x]);
+  return res;
 }
 int click (board_t * b, int x, int y) {
   if (x < 0 || x >= b->width ||
@@ -119,11 +165,23 @@ int click (board_t * b, int x, int y) {
 
 int checkWin(board_t * b) {
   //WRITE ME!
-  return 0;
+  for (int i = 0; i < b->height; i++) {
+    for (int j = 0; j < b->width; j++) {
+      if (b->board[i][j] == UNKNOWN) {
+        return 0;
+      }
+    }
+  }
+  return 1;
 }
 
 void freeBoard(board_t * b) {
   //WRITE ME!
+  for (int i = 0; i < b->height; i++) {
+    free(b->board[i]);
+  }
+  free(b->board);
+  free(b);
 }
 
 int readInt(char ** linep, size_t * lineszp) {
