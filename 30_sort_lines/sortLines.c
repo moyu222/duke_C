@@ -22,17 +22,25 @@ void readAndSort(FILE * f) {
   size_t sz = 0;
   size_t i = 0;
   while((getline(&curr, &sz, f)) >= 0) {
-    char ** lines = realloc(lines, (i+1) * sizeof(*lines));
+    char ** temp = realloc(lines, (i+1) * sizeof(*lines));
+    if (temp == NULL) {
+      perror("Memory allocation failed");
+      free(lines);
+      free(curr);
+      return;
+    }
+    lines = temp;
     lines[i] = curr;
     curr = NULL;
     i++;
   }
   free(curr);
-  sortData(lines, (i));
+  sortData(lines, i);
   for (size_t j = 0; j < i; j++) {
     printf("%s", lines[j]);
     free(lines[j]);
   }
+  free(lines);
 }
 
 int main(int argc, char ** argv) {
@@ -40,20 +48,19 @@ int main(int argc, char ** argv) {
   if (argc == 1) {
     readAndSort(stdin);
   }
-  else if (argc == 2) {
-    FILE * f = fopen(argv[1], "r");
-    if (f == NULL) {
-      perror("Can not open the file.\n");
-      return EXIT_FAILURE;
+  else {
+    for (int i = 1; i < argc; i++) {
+      FILE *f = fopen(argv[i], "r");
+      if (f == NULL) {
+        fprintf(stderr, "Could not open file\n");
+        return EXIT_FAILURE;
+      }
+      readAndSort(f);
+      if (fclose(f) != 0) {
+        fprintf(stderr, "Could not close file\n");
+        return EXIT_FAILURE;
+      }
     }
-    readAndSort(f);
-    if (fclose(f) != 0) {
-      perror("Failed to close the input file!");
-      return EXIT_FAILURE;
-    }
-  } else {
-    fprintf(stderr, "Expect 0 or 1 arguments.\n");
-    return EXIT_FAILURE;
   }
   return EXIT_SUCCESS;
 }
