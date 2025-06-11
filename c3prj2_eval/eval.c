@@ -64,69 +64,70 @@ ssize_t  find_secondary_pair(deck_t * hand,
   return -1;
 }
 
-int is_n_length_straight_at(deck_t * hand, size_t index, suit_t fs, int n) {
-  size_t card_num = hand->n_cards;
-  card_t ** cards = hand->cards;
-  int straight_num = 1;
 
-  if (index + n > card_num) {
-    return 0;
-  }
+/* int is_n_length_straight_at(deck_t * hand, size_t index, suit_t fs, int n) { */
+/*   size_t card_num = hand->n_cards; */
+/*   card_t ** cards = hand->cards; */
+/*   int straight_num = 1; */
 
-  if (n == 0) {return 1;}
-  // NUM_SUTIS
-  if (fs == NUM_SUITS) {
-    unsigned requireValue = cards[index]->value - 1;
-    for (size_t i = index + 1; i < card_num; i++) {
-      unsigned int curvalue = cards[i]->value;
-      if (curvalue == requireValue) {
-        requireValue--;
-        straight_num += 1;
-      } else if (curvalue < requireValue) {
-        break;
-      }
-    }
-  }
+/*   if (index + n > card_num) { */
+/*     return 0; */
+/*   } */
 
-  // other fs
-  else {
-    if (cards[index]->suit != fs) {return 0;}
-    unsigned requireValue = cards[index]->value - 1;
-    for (size_t i = index + 1; i < card_num; i++) {
-      unsigned int curvalue = cards[i]->value;
-      suit_t cursuit = cards[i]->suit;
-      if (curvalue == requireValue && cursuit == fs) {
-        requireValue--;
-        straight_num += 1;
-      } else if (curvalue < requireValue) {
-        break;
-      }
-    }
-  }
-  return (straight_num >= n) ? 1 : 0;
-}
+/*   if (n == 0) {return 1;} */
+/*   // NUM_SUTIS */
+/*   if (fs == NUM_SUITS) { */
+/*     unsigned requireValue = cards[index]->value - 1; */
+/*     for (size_t i = index + 1; i < card_num; i++) { */
+/*       unsigned int curvalue = cards[i]->value; */
+/*       if (curvalue == requireValue) { */
+/*         requireValue--; */
+/*         straight_num += 1; */
+/*       } else if (curvalue < requireValue) { */
+/*         break; */
+/*       } */
+/*     } */
+/*   } */
 
-int is_ace_low_straight_at(deck_t * hand, size_t index, suit_t fs) {
-  card_t ** cards = hand->cards;
-  if (cards[index]->value != 5) {return 0;}
-  int toTheEnd = is_n_length_straight_at(hand, index, fs, 4);
-  card_t * first = cards[0];
-  if (fs == NUM_SUITS) {
-    if (toTheEnd == 1 && first->value == VALUE_ACE) {return 1;}
-  } else{
-    if (toTheEnd == 1 && first->value == VALUE_ACE && first->suit == fs) {
-      return 1;
-    }
-  }
-  return 0;
-}
+/*   // other fs */
+/*   else { */
+/*     if (cards[index]->suit != fs) {return 0;} */
+/*     unsigned requireValue = cards[index]->value - 1; */
+/*     for (size_t i = index + 1; i < card_num; i++) { */
+/*       unsigned int curvalue = cards[i]->value; */
+/*       suit_t cursuit = cards[i]->suit; */
+/*       if (curvalue == requireValue && cursuit == fs) { */
+/*         requireValue--; */
+/*         straight_num += 1; */
+/*       } else if (curvalue < requireValue) { */
+/*         break; */
+/*       } */
+/*     } */
+/*   } */
+/*   return (straight_num >= n) ? 1 : 0; */
+/* } */
 
-int is_straight_at(deck_t * hand, size_t index, suit_t fs) {
-  if (is_ace_low_straight_at(hand, index, fs) == 1) {
-    return -1;
-  }
-  return is_n_length_straight_at(hand, index, fs, 5);
-}
+/* int is_ace_low_straight_at(deck_t * hand, size_t index, suit_t fs) { */
+/*   card_t ** cards = hand->cards; */
+/*   if (cards[index]->value != 5) {return 0;} */
+/*   int toTheEnd = is_n_length_straight_at(hand, index, fs, 4); */
+/*   card_t * first = cards[0]; */
+/*   if (fs == NUM_SUITS) { */
+/*     if (toTheEnd == 1 && first->value == VALUE_ACE) {return 1;} */
+/*   } else{ */
+/*     if (toTheEnd == 1 && first->value == VALUE_ACE && first->suit == fs) { */
+/*       return 1; */
+/*     } */
+/*   } */
+/*   return 0; */
+/* } */
+
+/* int is_straight_at(deck_t * hand, size_t index, suit_t fs) { */
+/*   if (is_ace_low_straight_at(hand, index, fs) == 1) { */
+/*     return -1; */
+/*   } */
+/*   return is_n_length_straight_at(hand, index, fs, 5); */
+/* } */
 
 int is_n_length_straight_start_at_or_after_index_with_start_value(
     deck_t *hand, size_t index, suit_t fs, int n, unsigned start_value) {
@@ -143,22 +144,22 @@ int is_n_length_straight_start_at_or_after_index_with_start_value(
   return 0;
 }
 
-/* int is_straight_at(deck_t *hand, size_t index, suit_t fs) { */
-/*   card_t *start_card = hand->cards[index]; */
-/*   if (fs != NUM_SUITS && fs != start_card->suit) */
-/*     return 0; */
+int is_straight_at(deck_t *hand, size_t index, suit_t fs) {
+  card_t *start_card = hand->cards[index];
+  if (fs != NUM_SUITS && fs != start_card->suit)
+    return 0;
 
-/*   if (is_n_length_straight_start_at_or_after_index_with_start_value( */
-/*           hand, index + 1, fs, 4, start_card->value - 1)) */
-/*     return 1; */
+  if (is_n_length_straight_start_at_or_after_index_with_start_value(
+          hand, index + 1, fs, 4, start_card->value - 1))
+    return 1;
 
-/*   if (start_card->value == VALUE_ACE && */
-/*       is_n_length_straight_start_at_or_after_index_with_start_value( */
-/*           hand, index + 1, fs, 4, 5)) */
-/*     return -1; */
+  if (start_card->value == VALUE_ACE &&
+      is_n_length_straight_start_at_or_after_index_with_start_value(
+          hand, index + 1, fs, 4, 5))
+    return -1;
 
-/*   return 0; */
-/* } */
+  return 0;
+}
 
 hand_eval_t build_hand_from_match(deck_t * hand,
 				  unsigned n,
@@ -220,7 +221,27 @@ int compare_hands(deck_t * hand1, deck_t * hand2) {
 //implementation in eval-c4.o) so that the
 //other functions we have provided can make
 //use of get_match_counts.
-unsigned * get_match_counts(deck_t * hand) ;
+//unsigned * get_match_counts(deck_t * hand) ;
+
+unsigned * get_match_counts(deck_t * hand) {
+  unsigned * match_counts = malloc(hand->n_cards * sizeof(* match_counts));
+  if (match_counts == NULL) {
+    perror("malloc error");
+    exit(EXIT_FAILURE);
+  }
+  int counts[VALUE_ACE + 1] = {0};
+  for (size_t i = 0; i < hand->n_cards; i++) {
+    card_t * card = hand->cards[i];
+    counts[card->value] += 1;
+    // interesting ! store location info in match_counts
+    match_counts[i] = card->value;
+  }
+
+  for (size_t j = 0; j< hand->n_cards; j++) {
+    match_counts[j] = counts[match_counts[j]];
+  }
+  return match_counts;
+}
 
 // We provide the below functions.  You do NOT need to modify them
 // In fact, you should not modify them!
